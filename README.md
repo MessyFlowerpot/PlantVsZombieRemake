@@ -1,2 +1,3 @@
-# PlantVsZombieRemake
-我的PVZ改版
+# PlantVsZombieRemake#植物大战僵尸重制版
+我的PVZ改版，正在开发中……
+目前进度：原版内容

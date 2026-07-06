@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f5720f1045e3740a68cdab79b7f0f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minMoveSpeed: 0.8
-  maxMoveSpeed: 1.4
+  minMoveSpeed: 1.5
+  maxMoveSpeed: 2
   downSpeed: 0.8
   randomizeOnStart: 1
 --- !u!61 &6621125381884918580
@@ -206,5 +206,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f424b5c75020f479d36b92b0af3010, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTime: 0.1
-  attackDamage: 1
+  attackTime: 0.05
+  attackDamage: 2

@@ -21,7 +21,7 @@ public class PeashooterAttack : MonoBehaviour
 
     void Start()
     {
-        nextFireTime += Random.Range(-1.0f, 1.0f);
+        nextFireTime += Random.Range(-0.3f, 0.3f);
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class PeashooterAttack : MonoBehaviour
             {
                 if (Time.time >= nextFireTime)
                 {
-                    nextFireTime += (fireTime+Random.Range(-0.5f,0.5f));
+                    nextFireTime += (fireTime+Random.Range(-0.2f,0.2f));
                     Attack();
                 }
             }

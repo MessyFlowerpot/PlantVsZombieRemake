@@ -42,6 +42,10 @@ public class ZombieAttack : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 如果僵尸离开了Friendly对象的碰撞范围，那么僵尸就会停止攻击
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (targetPeashooter == null) return;
@@ -65,8 +69,6 @@ public class ZombieAttack : MonoBehaviour
     {
         return isAttacking;
     }
-
-
     
     /// <summary>
     /// 僵尸攻击豌豆射手

@@ -26,7 +26,6 @@ public class PeashooterHealth : MonoBehaviour
         {
             nowPeashooterHealth -= damage;
         }
-        Debug.Log($"豌豆射手受到了伤害！剩余血量：{nowPeashooterHealth}");
         if (nowPeashooterHealth <= 0)
         {
             Die();
@@ -38,6 +37,7 @@ public class PeashooterHealth : MonoBehaviour
     /// </summary>
     public void Die()
     {
+        Debug.Log("豌豆射手死亡！");
         Destroy(gameObject);
     }
 

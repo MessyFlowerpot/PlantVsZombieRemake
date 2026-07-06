@@ -7,6 +7,7 @@ public class ZombieMove : MonoBehaviour
 {
     [SerializeField] private float minMoveSpeed = 1.5f;
     [SerializeField] private float maxMoveSpeed = 2.5f;
+    [SerializeField] private float downSpeed = 0.8f;
     [Tooltip("如果这个字段值为True，那么随机速度将会启用")]
     [SerializeField] private bool randomizeOnStart = true;
 
@@ -35,7 +36,7 @@ public class ZombieMove : MonoBehaviour
     /// </summary>
     /// <param name="isWillDie"></param>
     /// <param name="downSpeed"></param>
-    public void SpeedDown(bool isWillDie,float downSpeed)
+    public void SpeedDown(bool isWillDie)
     {
         if (isWillDie)
         {
@@ -44,9 +45,13 @@ public class ZombieMove : MonoBehaviour
         }
     }
 
-
     void Update()
     {
-        transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+        ZombieAttack zombieAttack = GetComponent<ZombieAttack>();
+        if (!(zombieAttack.IsAttacking()))
+        {
+            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+        }
+
     }
 }

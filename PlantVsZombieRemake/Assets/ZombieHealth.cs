@@ -7,7 +7,7 @@ public class ZombieHealth : MonoBehaviour
     [SerializeField] private int maxZombieHealth = 270;
     [SerializeField] private int diedZombieHealth = 70;
     private int nowZombieHealth;
-    [SerializeField] private float downSpeed = 0.8f;
+    
     [SerializeField] private float willDieTakeDmageSpeed = 0.1f;
     [SerializeField] private int willDieTakeDmage;
     [SerializeField] private int maxWillDieTakeDmage = 10;
@@ -48,7 +48,7 @@ public class ZombieHealth : MonoBehaviour
         ZombieMove zombieMove = GetComponent<ZombieMove>();
         if(zombieMove != null)
         {
-            zombieMove.SpeedDown(! isSpeedDown, downSpeed);
+            zombieMove.SpeedDown(! isSpeedDown);
         }
 
         isSpeedDown = true;
@@ -69,6 +69,15 @@ public class ZombieHealth : MonoBehaviour
     {
         Debug.Log("僵尸倒下了!");
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// 判断僵尸是否死亡
+    /// </summary>
+    /// <returns></returns>
+    public bool IsZombieDead()
+    {
+        return nowZombieHealth <= diedZombieHealth;
     }
 }
 

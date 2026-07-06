@@ -19,13 +19,25 @@ public class PeashooterAttack : MonoBehaviour
         Instantiate(bulletObject, transform.position, Quaternion.identity);
     }
 
+    void Start()
+    {
+        nextFireTime += Random.Range(-1.0f, 1.0f);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Time.time >= nextFireTime)
+        PeashooterHealth ph = GetComponent<PeashooterHealth>();
+        if (ph != null)
         {
-            nextFireTime += fireTime;
-            Attack();
-        }   
+            if (!ph.IsPeashooterDead())
+            {
+                if (Time.time >= nextFireTime)
+                {
+                    nextFireTime += (fireTime+Random.Range(-0.5f,0.5f));
+                    Attack();
+                }
+            }
+        }
     }
 }

@@ -1,0 +1,212 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ZombieAttack : MonoBehaviour
+{
+    private bool isAttacking = false;
+    [SerializeField] private float attackTime = 0.5f;
+    private float timer = 0f;
+    [SerializeField] private int attackDamage = 1;
+    // 当前正在被攻击的目标引用（避免每帧从僵尸自己上查找）
+    private PeashooterHealth targetPeashooter = null;
+    private ZombieHealth zombieHealth = null;
+    // 记录触发器范围内的所有植物目标（用于处理重叠多个目标的情况）
+    private readonly HashSet<PeashooterHealth> nearbyPlants = new HashSet<PeashooterHealth>();
+
+    /// <summary>
+    /// 如果僵尸碰到Friendly标签的对象，且Friendly对象没有死亡且僵尸没有死亡，那么僵尸就会攻击Friendly对象
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerEnter2D(Collider2D collision)//Unity内置方法
+    {
+        if (collision.CompareTag("Friendly"))//判断碰到的对象是否是Friendly标签
+        {
+            // 先尝试在碰撞体及其父对象/子对象中寻找 PeashooterHealth，以兼容组件挂在父/子对象的情况
+            PeashooterHealth ph = collision.GetComponent<PeashooterHealth>();
+            if (ph == null) ph = collision.GetComponentInParent<PeashooterHealth>();
+            if (ph == null) ph = collision.GetComponentInChildren<PeashooterHealth>();
+            if (ph != null)
+            {
+                // 将进入的植物加入集合
+                nearbyPlants.Add(ph);
+                // 如果当前没有目标，则把这个作为目标
+                if (targetPeashooter == null)
+                {
+                    targetPeashooter = ph;
+                    if (zombieHealth == null) zombieHealth = GetComponent<ZombieHealth>();
+                    if (zombieHealth != null && !zombieHealth.IsZombieDead() && !targetPeashooter.IsPeashooterDead())
+                    {
+                        isAttacking = true;
+                        timer = 0f;
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"[警告] 碰撞的Friendly对象没有PeashooterHealth脚本: {collision.gameObject.name}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 如果僵尸离开了Friendly对象的碰撞范围，那么僵尸就会停止攻击
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        // 无论是否是当前目标，都从集合中移除该植物引用
+        PeashooterHealth ph = collision.GetComponent<PeashooterHealth>();
+        if (ph == null) ph = collision.GetComponentInParent<PeashooterHealth>();
+        if (ph == null) ph = collision.GetComponentInChildren<PeashooterHealth>();
+        if (ph != null)
+        {
+            nearbyPlants.Remove(ph);
+        }
+
+        // 如果离开的对象是当前目标，则尝试切换到集合中的其它目标
+        if (ph == targetPeashooter)
+        {
+            targetPeashooter = GetNextAliveNearbyPlant();
+            if (targetPeashooter == null)
+            {
+                isAttacking = false;
+                timer = 0f;
+            }
+            else
+            {
+                // 继续攻击新的目标，重置计时器
+                isAttacking = true;
+                timer = 0f;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 检测僵尸是否在攻击
+    /// </summary>
+    /// <returns></returns>
+    public bool IsAttacking()
+    {
+        return isAttacking;
+    }
+
+    /// <summary>
+    /// 僵尸攻击豌豆射手
+    /// </summary>
+    void Update()
+    {
+        // 使用保存下来的目标引用，不要在僵尸自身上查找 PeashooterHealth
+        if (!isAttacking)
+            return;
+
+        if (zombieHealth == null) zombieHealth = GetComponent<ZombieHealth>();
+        if (zombieHealth != null && zombieHealth.IsZombieDead())
+        {
+            isAttacking = false;
+            targetPeashooter = null;
+            timer = 0f;
+            return;
+        }
+
+        // 如果当前目标为空或已死亡，尝试切换到集合中的其它目标或通过物理检测寻找新的目标
+        if (targetPeashooter == null || targetPeashooter.IsPeashooterDead())
+        {
+            // 清理集合内已经死亡的目标
+            nearbyPlants.RemoveWhere(p => p == null || p.IsPeashooterDead());
+            PeashooterHealth next = GetNextAliveNearbyPlant();
+            if (next != null)
+            {
+                targetPeashooter = next;
+                timer = 0f;
+            }
+            else
+            {
+                // 若集合中没有，使用物理检测做一次兜底查找
+                PeashooterHealth found = FindNearbyPeashooter();
+                if (found != null)
+                {
+                    nearbyPlants.Add(found);
+                    targetPeashooter = found;
+                    timer = 0f;
+                }
+                else
+                {
+                    // 确认周围无植物，停止攻击并允许移动
+                    if (!IsZombieBlocked())
+                    {
+                        isAttacking = false;
+                        targetPeashooter = null;
+                        timer = 0f;
+                        return;
+                    }
+                    else
+                    {
+                        // 有阻挡但无法解析为 PeashooterHealth，保持等待
+                        return;
+                    }
+                }
+            }
+        }
+
+        // 执行攻击逻辑
+        timer += Time.deltaTime;
+        if (timer > attackTime && targetPeashooter != null)
+        {
+            targetPeashooter.TakeDamage(attackDamage);
+            timer -= attackTime;
+        }
+    }
+    /// <summary>
+    /// 检测僵尸是否被植物阻挡
+    /// </summary>
+    /// <returns></returns>
+    public bool IsZombieBlocked()
+    {
+        int plantLayer = LayerMask.GetMask("Plant");
+        Collider2D hit = Physics2D.OverlapCircle(transform.position + Vector3.right * 0.5f, 1.0f, plantLayer);
+        Debug.Log($"开始检测！");
+        if (plantLayer == 0)
+        {
+            Debug.LogError("严重错误：找不到 'Plant' 层级！请检查 Project Settings -> Tags and Layers");
+        }
+
+        Debug.DrawRay(transform.position + Vector3.right * 0.5f, Vector2.up * 0.2f, Color.green);
+
+        if (hit != null)
+        {
+            Debug.Log($"检测到阻挡物: {hit.name} (层级: {hit.gameObject.layer})");
+            return true;
+        }
+        else
+        {
+            Debug.Log("未检测到植物"); 
+            return false;
+        }
+    }
+
+    // 从 nearbyPlants 中返回第一个存活的植物目标（若没有则返回 null）
+    private PeashooterHealth GetNextAliveNearbyPlant()
+    {
+        foreach (var p in nearbyPlants)
+        {
+            if (p != null && !p.IsPeashooterDead()) return p;
+        }
+        return null;
+    }
+
+    // 使用物理检测返回附近的 PeashooterHealth（作为兜底检测）
+    private PeashooterHealth FindNearbyPeashooter()
+    {
+        int plantMask = LayerMask.GetMask("Plant");
+        Collider2D hit = Physics2D.OverlapCircle(transform.position + Vector3.right * 0.5f, 1.0f, plantMask);
+        if (hit == null) return null;
+
+        PeashooterHealth ph = hit.GetComponent<PeashooterHealth>();
+        if (ph == null) ph = hit.GetComponentInParent<PeashooterHealth>();
+        if (ph == null) ph = hit.GetComponentInChildren<PeashooterHealth>();
+        return ph;
+    }
+}
+
+

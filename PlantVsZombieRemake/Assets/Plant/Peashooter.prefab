@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2346278480830808454}
   - component: {fileID: -3273678159110297816}
   - component: {fileID: 8453095344947306835}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Peashooter
   m_TagString: Friendly
   m_Icon: {fileID: 0}

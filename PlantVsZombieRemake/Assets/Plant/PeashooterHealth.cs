@@ -37,12 +37,11 @@ public class PeashooterHealth : MonoBehaviour
     /// </summary>
     public void Die()
     {
-        Debug.Log("豌豆射手死亡！");
         Destroy(gameObject);
     }
 
     /// <summary>
-    /// 判断豌豆射手是否死亡
+    /// 判断是否死亡
     /// </summary>
     /// <returns></returns>
     public bool IsPeashooterDead()

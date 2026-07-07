@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +11,8 @@ public class ZombieAttack : MonoBehaviour
     // 当前正在被攻击的目标引用（避免每帧从僵尸自己上查找）
     private PeashooterHealth targetPeashooter = null;
     private ZombieHealth zombieHealth = null;
+    // 记录触发器范围内的所有植物目标（用于处理重叠多个目标的情况）
+    private readonly HashSet<PeashooterHealth> nearbyPlants = new HashSet<PeashooterHealth>();
 
     /// <summary>
     /// 如果僵尸碰到Friendly标签的对象，且Friendly对象没有死亡且僵尸没有死亡，那么僵尸就会攻击Friendly对象
@@ -26,13 +28,18 @@ public class ZombieAttack : MonoBehaviour
             if (ph == null) ph = collision.GetComponentInChildren<PeashooterHealth>();
             if (ph != null)
             {
-                // 保存目标引用，后续在 Update() 中使用
-                targetPeashooter = ph;
-                if (zombieHealth == null) zombieHealth = GetComponent<ZombieHealth>();
-                if (zombieHealth != null && !zombieHealth.IsZombieDead() && !targetPeashooter.IsPeashooterDead())
+                // 将进入的植物加入集合
+                nearbyPlants.Add(ph);
+                // 如果当前没有目标，则把这个作为目标
+                if (targetPeashooter == null)
                 {
-                    isAttacking = true;
-                    timer = 0f;
+                    targetPeashooter = ph;
+                    if (zombieHealth == null) zombieHealth = GetComponent<ZombieHealth>();
+                    if (zombieHealth != null && !zombieHealth.IsZombieDead() && !targetPeashooter.IsPeashooterDead())
+                    {
+                        isAttacking = true;
+                        timer = 0f;
+                    }
                 }
             }
             else
@@ -79,7 +86,7 @@ public class ZombieAttack : MonoBehaviour
         if (isAttacking && targetPeashooter != null)
         {
             // 如果目标或僵尸已死亡，停止攻击
-            if (targetPeashooter.IsPeashooterDead() || (zombieHealth != null && zombieHealth.IsZombieDead()))
+            if ((targetPeashooter.IsPeashooterDead() && !IsZombieBlocked())|| (zombieHealth != null && zombieHealth.IsZombieDead()))
             {
                 isAttacking = false;
                 targetPeashooter = null;
@@ -95,5 +102,34 @@ public class ZombieAttack : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 检测僵尸是否被植物阻挡
+    /// </summary>
+    /// <returns></returns>
+    public bool IsZombieBlocked()
+    {
+        int plantLayer = LayerMask.GetMask("Plant");
+        Collider2D hit = Physics2D.OverlapCircle(transform.position + Vector3.right * 0.5f, 1.0f, plantLayer);
+        Debug.Log($"开始检测！");
+        if (plantLayer == 0)
+        {
+            Debug.LogError("严重错误：找不到 'Plant' 层级！请检查 Project Settings -> Tags and Layers");
+        }
+
+        Debug.DrawRay(transform.position + Vector3.right * 0.5f, Vector2.up * 0.2f, Color.green);
+
+        if (hit != null)
+        {
+            Debug.Log($"检测到阻挡物: {hit.name} (层级: {hit.gameObject.layer})");
+            return true;
+        }
+        else
+        {
+            Debug.Log("未检测到植物"); 
+            return false;
+        }
+    }
 }
+
 

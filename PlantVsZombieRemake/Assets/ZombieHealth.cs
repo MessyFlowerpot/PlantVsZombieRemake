@@ -67,7 +67,6 @@ public class ZombieHealth : MonoBehaviour
     /// </summary>
     public void Die()
     {
-        Debug.Log("僵尸倒下了!");
         Destroy(gameObject);
     }
 

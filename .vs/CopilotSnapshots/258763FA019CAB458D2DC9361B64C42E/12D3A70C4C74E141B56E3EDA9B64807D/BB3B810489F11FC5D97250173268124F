@@ -1,0 +1,128 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ZombieAttack : MonoBehaviour
+{
+    private bool isAttacking = false;
+    [SerializeField] private float attackTime = 0.5f;
+    private float timer = 0f;
+    [SerializeField] private int attackDamage = 1;
+    // 当前正在被攻击的目标引用（避免每帧从僵尸自己上查找）
+    private PeashooterHealth targetPeashooter = null;
+    private ZombieHealth zombieHealth = null;
+
+    /// <summary>
+    /// 如果僵尸碰到Friendly标签的对象，且Friendly对象没有死亡且僵尸没有死亡，那么僵尸就会攻击Friendly对象
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerEnter2D(Collider2D collision)//Unity内置方法
+    {
+        if (collision.CompareTag("Friendly"))//判断碰到的对象是否是Friendly标签
+        {
+            // 先尝试在碰撞体及其父对象/子对象中寻找 PeashooterHealth，以兼容组件挂在父/子对象的情况
+            PeashooterHealth ph = collision.GetComponent<PeashooterHealth>();
+            if (ph == null) ph = collision.GetComponentInParent<PeashooterHealth>();
+            if (ph == null) ph = collision.GetComponentInChildren<PeashooterHealth>();
+            if (ph != null)
+            {
+                // 保存目标引用，后续在 Update() 中使用
+                targetPeashooter = ph;
+                if (zombieHealth == null) zombieHealth = GetComponent<ZombieHealth>();
+                if (zombieHealth != null && !zombieHealth.IsZombieDead() && !targetPeashooter.IsPeashooterDead())
+                {
+                    isAttacking = true;
+                    timer = 0f;
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"[警告] 碰撞的Friendly对象没有PeashooterHealth脚本: {collision.gameObject.name}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 如果僵尸离开了Friendly对象的碰撞范围，那么僵尸就会停止攻击
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (targetPeashooter == null) return;
+        // 如果离开的对象是当前目标，则停止攻击并清理引用
+        PeashooterHealth ph = collision.GetComponent<PeashooterHealth>();
+        if (ph == null) ph = collision.GetComponentInParent<PeashooterHealth>();
+        if (ph == null) ph = collision.GetComponentInChildren<PeashooterHealth>();
+        if (ph == targetPeashooter)
+        {
+            isAttacking = false;
+            targetPeashooter = null;
+            timer = 0f;
+        }
+    }
+
+    /// <summary>
+    /// 检测僵尸是否在攻击
+    /// </summary>
+    /// <returns></returns>
+    public bool IsAttacking()
+    {
+        return isAttacking;
+    }
+    
+    /// <summary>
+    /// 僵尸攻击豌豆射手
+    /// </summary>
+    void Update()
+    {
+        // 使用保存下来的目标引用，不要在僵尸自身上查找 PeashooterHealth
+        if (isAttacking && targetPeashooter != null)
+        {
+            // 如果目标或僵尸已死亡，停止攻击
+            if ((targetPeashooter.IsPeashooterDead() && !IsZombieBlocked())|| (zombieHealth != null && zombieHealth.IsZombieDead()))
+            {
+                isAttacking = false;
+                targetPeashooter = null;
+                timer = 0f;
+                return;
+            }
+
+            timer += Time.deltaTime;
+            if (timer > attackTime)
+            {
+                targetPeashooter.TakeDamage(attackDamage);
+                timer -= attackTime;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 检测僵尸是否被植物阻挡
+    /// </summary>
+    /// <returns></returns>
+    public bool IsZombieBlocked()
+    {
+        int plantLayer = LayerMask.GetMask("Plant");
+        Collider2D hit = Physics2D.OverlapCircle(transform.position + Vector3.right * 0.5f, 1.0f, plantLayer);
+        Debug.Log($"开始检测！");
+        if (plantLayer == 0)
+        {
+            Debug.LogError("严重错误：找不到 'Plant' 层级！请检查 Project Settings -> Tags and Layers");
+        }
+
+        Debug.DrawRay(transform.position + Vector3.right * 0.5f, Vector2.up * 0.2f, Color.green);
+
+        if (hit != null)
+        {
+            Debug.Log($"检测到阻挡物: {hit.name} (层级: {hit.gameObject.layer})");
+            return true;
+        }
+        else
+        {
+            Debug.Log("未检测到植物"); 
+            return false;
+        }
+    }
+}
+
+

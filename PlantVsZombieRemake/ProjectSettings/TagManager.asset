@@ -7,17 +7,19 @@ TagManager:
   - Enemy
   - Friendly
   - Home
+  - Grave
+  - Bullet
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Map
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Plant
+  - Grave
+  - Bullet
+  - Zombie
   - 
   - 
   - 

@@ -1,0 +1,78 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ZombieAttack : MonoBehaviour
+{
+    private bool isAttacking = false;
+    [SerializeField] private float attackTime = 0.5f;
+    private float timer = 0f;
+    [SerializeField] private int attackDamage = 1;
+
+    /// <summary>
+    /// 如果僵尸碰到Friendly标签的对象，且Friendly对象没有死亡且僵尸没有死亡，那么僵尸就会攻击Friendly对象
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerEnter2D(Collider2D collision)//Unity内置方法
+    {
+        if (collision.CompareTag("Friendly"))//判断碰到的对象是否是Friendly标签
+        {
+            PeashooterHealth peashooterHealth = collision.gameObject.GetComponent<PeashooterHealth>();
+            if (peashooterHealth != null)
+            {
+                ZombieHealth zombieHealth = GetComponent<ZombieHealth>();     
+                if(zombieHealth != null)
+                {
+                    bool isPeashooterAlive = !peashooterHealth.IsPeashooterDead();
+                    bool isZombieAlive = !zombieHealth.IsZombieDead();
+                    if (isPeashooterAlive && isZombieAlive)
+                    {
+                        isAttacking = true;
+                    }
+                }             
+            }
+            if(peashooterHealth == null)
+            {
+                Debug.LogWarning($"[警告] 碰撞的Friendly对象没有PeashooterHealth脚本: {collision.gameObject.name}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 检测僵尸是否在攻击
+    /// </summary>
+    /// <returns></returns>
+    public bool IsAttacking()
+    {
+        return isAttacking;
+    }
+
+
+    
+    /// <summary>
+    /// 僵尸攻击豌豆射手
+    /// </summary>
+    void Update()
+    {
+        PeashooterHealth peashooterHealth = gameObject.GetComponent<PeashooterHealth>();
+        Debug.Log($"[调试] 正在攻击: {isAttacking} | 目标血量脚本: {peashooterHealth}");
+        if (peashooterHealth == null)
+        {
+            Debug.LogError($"[警告] 碰撞的Friendly对象没有PeashooterHealth脚本: {gameObject.name}");
+        }
+
+        if (isAttacking && peashooterHealth != null)
+        {
+            if (!peashooterHealth.IsPeashooterDead())
+            {
+                timer += Time.deltaTime;
+                if (timer > attackTime)
+                {
+                    peashooterHealth.TakeDamage(attackDamage);
+                    timer -= attackTime;
+                }
+            }
+        }
+    }
+}
+

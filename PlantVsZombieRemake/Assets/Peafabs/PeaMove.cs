@@ -26,7 +26,7 @@ public class PeaMove : MonoBehaviour
             if (zombieHealth != null)
             {
                 hasHit = true;
-                zombieHealth.takeDamage(damage);
+                zombieHealth.TakeDamage(damage);
             }
             Destroy(gameObject);
         }

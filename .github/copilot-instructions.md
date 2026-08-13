@@ -1,0 +1,4 @@
+# Copilot Instructions
+
+## 项目指南
+- 用户指出我将类职责与脚本文件命名搞反，需要在 `WaveControl.cs` 中使用 `WaveControl` 类名并在 `ZombieSpawner.cs` 中订阅 `WaveControl.OnPointsAllocated`。

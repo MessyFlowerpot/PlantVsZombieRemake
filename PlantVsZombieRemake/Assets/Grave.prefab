@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 912430279768892458}
   - component: {fileID: 8212577256089901212}
-  - component: {fileID: -7814717729152488657}
+  - component: {fileID: 3932769497947178899}
   m_Layer: 7
   m_Name: Grave
   m_TagString: Grave
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-7814717729152488657
+--- !u!114 &3932769497947178899
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,13 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb90c4627f34d9949950ef0e2b52e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isExponentialGrowth: 1
-  exponentialGrowthRate: 1.1
-  initialZombiePoints: 6
-  zombiePointsPerWave: 5
-  isZombieLimitProtection: 1
-  zombiePointsLimit: 500
-  waveInterval: 15
-  zombieTypes:
-  - zombiePrefab: {fileID: 3402461472589524056, guid: 0656d470961cfe3468103aec92d6b997, type: 3}
-    zombiePointCost: 1
+  isActive: 1
+  spawnOptions:
+  - id: 1
+    prefab: {fileID: 3402461472589524056, guid: 0656d470961cfe3468103aec92d6b997, type: 3}
+    cost: 2
+  spawnInterval: 0.5

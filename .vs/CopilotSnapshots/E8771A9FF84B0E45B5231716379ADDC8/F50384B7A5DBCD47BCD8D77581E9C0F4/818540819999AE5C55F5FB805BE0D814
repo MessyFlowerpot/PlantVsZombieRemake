@@ -1,0 +1,102 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class ZombieSpwaner : MonoBehaviour
+{
+    [Header("生成规则")]
+    [Tooltip("此字段为此出生点的僵尸点数")]
+    [SerializeField] private int initialZombiePoints = 3;
+
+    [Header("波次设置")]
+    [Tooltip("生成波次的间隔")]
+    [SerializeField] private float waveInterval = 30.0f;
+
+    private Coroutine spawnRoutine;
+    private bool isSpawning = false;
+
+    /// <summary>
+    /// 僵尸类型类，包含僵尸预制体和僵尸点数
+    /// </summary>
+    [System.Serializable]
+    public class ZombieType
+    {
+        [Tooltip("拖入僵尸的预制体")]
+        public GameObject zombiePrefab;
+
+        [Tooltip("本僵尸占用的点数")]
+        public int zombiePointCost = 1;
+    }
+
+    [Tooltip("此列表内含所有类型僵尸")]
+    public List<ZombieType> zombieTypes = new List<ZombieType>();
+
+
+
+
+    /// <summary>
+    /// 生成僵尸，计算当前波次的僵尸点数，随机生成僵尸类型，直到当前波次的僵尸点数为0，如果没有僵尸类型可以生成，则跳出循环
+    /// </summary>
+    public void SpwanZombies()
+    {
+        int thisWaveZombiePonits = initialZombiePoints;
+        if (zombieTypes == null || zombieTypes.Count == 0)
+        {
+            Debug.LogError("没有僵尸类型，请在ZombieSpwaner中添加僵尸类型");
+            return;
+        }
+        while (thisWaveZombiePonits > 0)
+        {
+            ZombieType newZombie = zombieTypes[Random.Range(0, zombieTypes.Count)];
+            if (newZombie.zombiePointCost < thisWaveZombiePonits)
+            {
+                thisWaveZombiePonits -= newZombie.zombiePointCost;
+                Instantiate(newZombie.zombiePrefab, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 如果按下了开始生成僵尸的按钮，则开启协程，开始生成僵尸
+    /// </summary>
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!isSpawning)
+            {
+                spawnRoutine = StartCoroutine(SpawnZombiesRoutine());
+                Debug.Log("开始生成僵尸");
+                isSpawning = true;
+            }
+            else
+            {
+                StopCoroutine(spawnRoutine);
+                Debug.Log("停止生成僵尸");
+                isSpawning = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 生成僵尸的协程，每波生成僵尸后等待waveInterval秒后再生成下一波僵尸，如果当前波次为偶数波，则增加5秒的间隔
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator SpawnZombiesRoutine()
+    {
+        while (true)
+        {
+            SpwanZombies();
+            if(currentWave % 2 == 0)
+            { 
+                waveInterval += 5.0f; // 每两波增加5秒的间隔
+            }
+            yield return new WaitForSeconds(waveInterval);
+        }
+    }
+}

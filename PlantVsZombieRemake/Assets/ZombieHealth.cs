@@ -23,7 +23,7 @@ public class ZombieHealth : MonoBehaviour
     /// 僵尸受到伤害
     /// </summary>
     /// <param name="damage"></param>
-    public void takeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         if(nowZombieHealth <= damage)
         {
@@ -36,14 +36,14 @@ public class ZombieHealth : MonoBehaviour
 
         if (nowZombieHealth <= diedZombieHealth)
         {
-            StartCoroutine(willDie());
+            StartCoroutine(WillDie());
         }
     }
 
     /// <summary>
     /// 濒死时，僵尸移动速度降低，并且血量持续下降，直到死亡
     /// </summary>
-    public IEnumerator willDie()
+    public IEnumerator WillDie()
     {
         ZombieMove zombieMove = GetComponent<ZombieMove>();
         if(zombieMove != null)

@@ -9,6 +9,7 @@ TagManager:
   - Home
   - Grave
   - Bullet
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -16,11 +17,11 @@ TagManager:
   - Map
   - Water
   - UI
-  - Plant
-  - Grave
+  - Prefab
+  - Substance
   - Bullet
-  - Zombie
-  - 
+  - PracticalUI
+  - HelpingUI
   - 
   - 
   - 
@@ -45,4 +46,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Map
+    uniqueID: 2183304807
+    locked: 0
+  - name: HelpingUI
+    uniqueID: 3997236973
+    locked: 0
+  - name: Substance
+    uniqueID: 1117860799
+    locked: 0
+  - name: Prefab
+    uniqueID: 375406213
+    locked: 0
+  - name: Bullet
+    uniqueID: 2342473441
+    locked: 0
+  - name: PracticalUI
+    uniqueID: 1124746707
     locked: 0

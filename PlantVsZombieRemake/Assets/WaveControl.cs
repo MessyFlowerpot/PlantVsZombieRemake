@@ -128,7 +128,6 @@ public class WaveControl : MonoBehaviour
     void NewWave()
     {
         waveCount++;
-        Debug.Log($"新的波次开始 | 目前波次:{waveCount} | 僵尸点数:{currentWavePoints}");
 
         ZombieSpawner[] validSpawners = FindObjectsOfType<ZombieSpawner>(false)
             .Where(s => s.IsActive())
@@ -196,9 +195,6 @@ public class WaveControl : MonoBehaviour
                 allocation[idx]++;
             }
         }
-
-        // 调试输出
-        Debug.Log($"分配结果(含保证随机选择)，总点数={totalPoints}, 分配和={allocation.Sum()}, allocation=[{string.Join(", ", allocation)}], 保证已分配={guaranteedCount}");
 
         // 触发事件，让订阅者根据分配点数开始刷怪并自行减少点数
         OnPointsAllocated?.Invoke(allocation, validSpawners);

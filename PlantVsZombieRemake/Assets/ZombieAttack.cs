@@ -165,7 +165,6 @@ public class ZombieAttack : MonoBehaviour
     {
         int plantLayer = LayerMask.GetMask("Plant");
         Collider2D hit = Physics2D.OverlapCircle(transform.position + Vector3.right * 0.5f, 1.0f, plantLayer);
-        Debug.Log($"开始检测！");
         if (plantLayer == 0)
         {
             Debug.LogError("严重错误：找不到 'Plant' 层级！请检查 Project Settings -> Tags and Layers");
@@ -175,12 +174,10 @@ public class ZombieAttack : MonoBehaviour
 
         if (hit != null)
         {
-            Debug.Log($"检测到阻挡物: {hit.name} (层级: {hit.gameObject.layer})");
             return true;
         }
         else
         {
-            Debug.Log("未检测到植物"); 
             return false;
         }
     }

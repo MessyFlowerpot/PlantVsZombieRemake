@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3278116409531974414}
   - component: {fileID: 777739704064195494}
   - component: {fileID: -1454884669214717276}
+  - component: {fileID: 726926355822224341}
   m_Layer: 6
   m_Name: Wallnut
   m_TagString: Friendly
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 375406213
-  m_SortingLayer: 5
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.76729554, g: 0.49019608, b: 0, a: 1}
@@ -172,3 +173,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxPeashooterHealth: 2000
+--- !u!114 &726926355822224341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571679065473330464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f54e4584fa8ce14abc73bc6e0643594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5

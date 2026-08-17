@@ -45,7 +45,6 @@ public class ZombieSpawner : MonoBehaviour
     public void SetActiveState(bool state)
     {
         isActive = state;
-        Debug.Log(isActive ? $"[{gameObject.name}] 僵尸生成器已激活" : $"[{gameObject.name}] 僵尸生成器已停用");
     }
 
     public bool IsActive() => isActive;
@@ -114,7 +113,6 @@ public class ZombieSpawner : MonoBehaviour
         if (assigned <= 0) return;
 
         pendingPoints += assigned;
-        Debug.Log($"[{gameObject.name}] 接收到分配点数: {assigned}，当前待用点数: {pendingPoints}");
 
         if (spawningCoroutine == null) spawningCoroutine = StartCoroutine(SpawnRoutine());
     }

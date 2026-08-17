@@ -2,3 +2,5 @@
 
 ## 项目指南
 - 用户指出我将类职责与脚本文件命名搞反，需要在 `WaveControl.cs` 中使用 `WaveControl` 类名并在 `ZombieSpawner.cs` 中订阅 `WaveControl.OnPointsAllocated`。
+- 点击格子时的行为：如果格子的 `isHavingPlant == false` 则执行种植逻辑；如果 `isHavingPlant == true` 则执行选中该格子上的植物。
+- 在种植时将 `CellHighLight` 的 `plantOnCell` 字段设置为新生成的 `PlantMove`，并在移动时更新该引用以避免按位置搜索。

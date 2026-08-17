@@ -1,12 +1,19 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 public class CellHighLight : MonoBehaviour
 {
     private SpriteRenderer sr;// 记录格子精灵渲染器组件
     private Color originalColor;// 记录格子原始颜色
     private bool isMouseEnter = false;// 记录鼠标是否进入格子
+
+    // 表示格子是否被植物占用（由外部设置/查询）
+    public bool isHavingPlant = false;
+
+    // 记录当前格子上的植物引用，种植时/移动结束时由 PlantMove 设置
+    public PlantMove plantOnCell = null;
 
     void Start()
     {
@@ -21,7 +28,7 @@ public class CellHighLight : MonoBehaviour
 
         originalColor = sr.color;
 
-        SetAlpha(0f);// 设置初始透明度为0.2
+        SetAlpha(0f);// 设置初始透明度为0
     }
 
     /// <summary>
@@ -58,34 +65,87 @@ public class CellHighLight : MonoBehaviour
     }
 
     /// <summary>
-    /// 当鼠标点击格子时，输出格子位置
+    /// 当鼠标点击格子时：
+    /// - 若有已选植物：优先尝试移动该植物至此格（移动成功则不再种植）
+    /// - 若无已选植物且 isHavingPlant == false：执行种植
+    /// - 若无已选植物且 isHavingPlant == true：选中格子上的植物（使用 plantOnCell 引用）
     /// </summary>
     void OnMouseDown()
     {
-        Debug.Log($"已点击格子：{transform.position}");
 
-        if (isMouseEnter && sr != null)
+        if (!isMouseEnter || sr == null) return;
+
+        // 优先：如果存在全局已选植物，先尝试移动（无论格子是否为空）
+        if (SelectPlantController.instance != null)
         {
-            PlantInventoryController inventory = FindObjectOfType<PlantInventoryController>();// 使用 FindObjectOfType 来获取 PlantInventoryController 实例
+            PlantMove selected = SelectPlantController.instance.GetSelectPlant();
+            if (selected != null)
+            {
+                bool moved = selected.TryMoveToCell(this);
+                if (moved)
+                {
+                    // 移动发起成功，取消选中并返回（不执行种植）
+                    SelectPlantController.instance.DeselectPlant();
+                    return;
+                }
+                else
+                {
+                    // 移动失败时（例如目标被占用或为同格），如果格子有植物则选中该格子的植物
+                    if (isHavingPlant)
+                    {
+                        if (plantOnCell == null)
+                        {
+                            Debug.LogWarning("格子标记为已被占用，但 plantOnCell 为 null（数据不一致）");
+                            return;
+                        }
+                        SelectPlantController.instance.SelectPlant(plantOnCell);
+                        return;
+                    }
+                    // 若移动失败且格子为空，则继续执行后续种植逻辑（降级为种植）
+                }
+            }
+        }
+
+        // 若没有已选植物或移动降级到种植：按 isHavingPlant 决定
+        if (!isHavingPlant)
+        {
+            PlantInventoryController inventory = FindObjectOfType<PlantInventoryController>();
             if (inventory == null)
             {
                 Debug.LogWarning("未找到 PlantInventoryController 实例");
                 return;
             }
 
-            GameObject plant = inventory.GetPlantByIndex(0); // TODO:增加随机种植的方法
+            GameObject plant = inventory.GetPlantByIndex(0); // TODO:增加随机或选择种植的方法
 
-            if(plant == null)
+            if (plant == null)
             {
                 Debug.LogWarning("当前植物列表为空，请检查自己的卡槽");
                 return;
             }
             else
             {
-                NewPrefabOnCell.Instance.CreateNewPrefab(plant, transform.position);
-                Debug.Log($"成功在格子种植了：{plant.name}");
+                // 使用 CreateNewPrefab 并传入当前格子引用，以便建立关联（NewPrefabOnCell 会在创建后设置 plantOnCell）
+                GameObject created = NewPrefabOnCell.Instance.CreateNewPrefab(plant, transform.position, this);
+                if (created != null)
+                {
+                    isHavingPlant = true; // 标记该格已被占用
+                }
             }
-                    
+
+            return;
+        }
+
+        // 若走到这里，说明格子被占用且没有已选植物 -> 选中格子上的植物
+        if (plantOnCell == null)
+        {
+            Debug.LogWarning("格子标记为已被占用，但 plantOnCell 为 null（数据不一致）");
+            return;
+        }
+
+        if (SelectPlantController.instance != null)
+        {
+            SelectPlantController.instance.SelectPlant(plantOnCell);
         }
     }
 }

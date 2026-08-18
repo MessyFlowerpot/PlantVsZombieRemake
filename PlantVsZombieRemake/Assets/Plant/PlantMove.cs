@@ -1,6 +1,8 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine;
+using UnityEngine.UI;
 
 
 public class PlantMove : MonoBehaviour
@@ -12,8 +14,6 @@ public class PlantMove : MonoBehaviour
     [Tooltip("疲劳时降低的速度倍率")]
     [SerializeField] private float tiredSpeedMultiplier = 0.7f; // 疲劳时的移动速度倍率
     private float currentSpeed; // 移动速度
-
-    // 内部状态
     private Vector3 targetPosition; // 目标位置
     private float strength;//植物体力
     private float maxStrength = 100f;//植物最大体力
@@ -23,12 +23,8 @@ public class PlantMove : MonoBehaviour
     private float slowlyStrengthRecoveryRate = 1.5f; // 缓慢每秒体力恢复量
     private bool isMoving = false; // 是否正在移动
     private bool isTired = false; // 是否疲劳（体力低于阈值）
+    [SerializeField] private Slider staminaSlider;// 体力条 UI Slider
 
-    // 恢复调试相关
-    private bool isRecovering = false;
-    private float recoveryStartStrength = 0f;
-    private bool recoveryStartIsTired = false;
-    private Coroutine recoveryDebugCoroutine = null;
 
     // 选中视觉相关
     private SpriteRenderer sr;
@@ -50,8 +46,8 @@ public class PlantMove : MonoBehaviour
         {
             originalColor = sr.color;
         }
-    }
 
+    }
 
     /// <summary>
     /// 将该植物与格子关联（用于在生成时设置格子占用）
@@ -121,8 +117,6 @@ public class PlantMove : MonoBehaviour
         isMoving = true;
         // 初始化速度为原速，后续在 Update 中根据体力调整
         currentSpeed = originalSpeed;
-        // 停止恢复状态（如果之前在恢复）
-        isRecovering = false;
     }
 
     /// <summary>
@@ -194,34 +188,24 @@ public class PlantMove : MonoBehaviour
                     movingTargetCell = null;
                 }
             }
-
-            // 移动时不处于恢复状态
-            isRecovering = false;
         }
         else
         {
             if (strength < maxStrength)
             {
-                // 恢复开始的转变检测：只有从非恢复到恢复时触发一次初始调试日志和计时协程
-                if (!isRecovering)
-                {
-                    isRecovering = true;
-                    recoveryStartStrength = strength;
-                    recoveryStartIsTired = isTired;
-                    Debug.Log($"[恢复开始] 初始体力: {recoveryStartStrength:F2}, 是否疲劳: {recoveryStartIsTired}");
-                    if (recoveryDebugCoroutine == null)
-                    {
-                        recoveryDebugCoroutine = StartCoroutine(RecoveryDebugCoroutine(20f));
-                    }
-                }
-
                 ResumeStrength(isTired);
             }
-            else
-            {
-                // 已恢复到满值，结束恢复状态
-                isRecovering = false;
-            }
+        }
+        UpdateStaminaUI();
+    }
+
+    private void UpdateStaminaUI()
+    {
+        if (staminaSlider != null)
+        {
+            float newValue = strength / maxStrength;
+            staminaSlider.value = newValue;// 将体力值映射到 Slider 的范围（0-1）
+            Debug.Log("体力条更新！当前值: " + newValue + " | Slider当前显示: " + staminaSlider.value);
         }
     }
 
@@ -242,11 +226,5 @@ public class PlantMove : MonoBehaviour
         }
     }
 
-    // 调试协程：在指定秒数后打印当前体力（不重复启动）
-    private IEnumerator RecoveryDebugCoroutine(float waitSeconds)
-    {
-        yield return new WaitForSeconds(waitSeconds);
-        Debug.Log($"[恢复报告] {name} 在{waitSeconds}秒后当前体力: {strength:F2} (开始时: {recoveryStartStrength:F2}, 开始时疲劳: {recoveryStartIsTired})");
-        recoveryDebugCoroutine = null;
-    }
+    
 }

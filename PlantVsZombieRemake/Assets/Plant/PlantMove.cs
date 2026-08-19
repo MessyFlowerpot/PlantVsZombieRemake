@@ -23,7 +23,7 @@ public class PlantMove : MonoBehaviour
     private float slowlyStrengthRecoveryRate = 1.5f; // 缓慢每秒体力恢复量
     private bool isMoving = false; // 是否正在移动
     private bool isTired = false; // 是否疲劳（体力低于阈值）
-    [SerializeField] private Slider staminaSlider;// 体力条 UI Slider
+    private StaminaBarUI staminaBarUI;// 体力条 UI Slider
 
 
     // 选中视觉相关
@@ -47,6 +47,16 @@ public class PlantMove : MonoBehaviour
             originalColor = sr.color;
         }
 
+        staminaBarUI = GetComponentInChildren<StaminaBarUI>();// 尝试获取子物体中的 StaminaBarUI 组件
+
+        // 检查是否成功获取 StaminaBarUI 组件
+        if (staminaBarUI == null)
+        {
+            Debug.LogError($"{name} 没有找到StaminaBarUI子物体!请检查层级是否正常");
+            return;
+        }
+
+        staminaBarUI = GetComponentInChildren<StaminaBarUI>();
     }
 
     /// <summary>
@@ -166,10 +176,6 @@ public class PlantMove : MonoBehaviour
                 strength -= strengthDecreaseRate * Time.deltaTime;
                 strength = Mathf.Max(0f, strength);
             }
-            else
-            {
-                Debug.Log($"{name}体力耗尽了!");
-            }
 
             // 移动植物
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
@@ -196,16 +202,9 @@ public class PlantMove : MonoBehaviour
                 ResumeStrength(isTired);
             }
         }
-        UpdateStaminaUI();
-    }
-
-    private void UpdateStaminaUI()
-    {
-        if (staminaSlider != null)
+        if (staminaBarUI != null)
         {
-            float newValue = strength / maxStrength;
-            staminaSlider.value = newValue;// 将体力值映射到 Slider 的范围（0-1）
-            Debug.Log("体力条更新！当前值: " + newValue + " | Slider当前显示: " + staminaSlider.value);
+            staminaBarUI.UpdateStamina(strength, maxStrength,isMoving);
         }
     }
 

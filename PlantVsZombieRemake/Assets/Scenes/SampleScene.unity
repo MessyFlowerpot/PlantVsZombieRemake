@@ -1001,6 +1001,7 @@ MonoBehaviour:
   allPlants:
   - {fileID: 5554099011685167161, guid: 27b420cc9475da0408d530635118e98f, type: 3}
   - {fileID: 1571679065473330464, guid: 8a2e2646e471a7741bcf6543f4aeed8e, type: 3}
+  - {fileID: 2765110054492206223, guid: e8c8c6d6910eaab4e971bccc72c822d8, type: 3}
 --- !u!212 &1808139131
 SpriteRenderer:
   m_ObjectHideFlags: 0

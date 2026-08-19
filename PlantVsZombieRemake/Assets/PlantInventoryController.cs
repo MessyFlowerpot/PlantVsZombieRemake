@@ -15,6 +15,8 @@ public class PlantInventoryController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2)) TogglePlant(1);
 
+        if (Input.GetKeyDown(KeyCode.Alpha3)) TogglePlant(2);
+
         if (Input.GetKeyDown(KeyCode.O)) OutSlot();
     }
 

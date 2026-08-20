@@ -39,14 +39,11 @@ public class StaminaBarUI : MonoBehaviour
         {
             fillImage = slider.fillRect.GetComponent<Image>();// 尝试从 Slider 的 fillRect 获取
         }
-
         canvasGroup = GetComponent<CanvasGroup>();// 尝试获取 CanvasGroup 组件
-        if (canvasGroup == null)
+        if(canvasGroup == null) 
         {
             canvasGroup = gameObject.AddComponent<CanvasGroup>();// 如果没有 CanvasGroup 组件，则添加一个
         }
-
-        CreateBorder();// 创建边框
     }
 
     private void Update()

@@ -198,5 +198,7 @@ public class WaveControl : MonoBehaviour
 
         // 触发事件，让订阅者根据分配点数开始刷怪并自行减少点数
         OnPointsAllocated?.Invoke(allocation, validSpawners);
+
+        Debug.Log($"第{waveCount}波");
     }
 }

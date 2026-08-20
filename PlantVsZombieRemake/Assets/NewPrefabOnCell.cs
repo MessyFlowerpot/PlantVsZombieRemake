@@ -47,9 +47,13 @@ public class NewPrefabOnCell : MonoBehaviour
             }
             else
             {
-                // 如果 prefab 没有 PlantMove 组件，则直接标记格子为占用（plantOnCell 保持 null）
-                cell.isHavingPlant = true;
-                cell.plantOnCell = null;
+                // 对于没有 PlantMove 的植物，使用 PlantOccupier 负责占位与销毁时清理
+                PlantOccupier occupier = go.GetComponent<PlantOccupier>();
+                if (occupier == null)
+                {
+                    occupier = go.AddComponent<PlantOccupier>();
+                }
+                occupier.AssignCell(cell);
             }
         }
 

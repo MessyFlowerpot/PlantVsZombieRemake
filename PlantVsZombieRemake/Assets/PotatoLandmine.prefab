@@ -97,6 +97,8 @@ GameObject:
   - component: {fileID: 3682070039147843834}
   - component: {fileID: 2438763503572504762}
   - component: {fileID: -5740779732289932293}
+  - component: {fileID: 118497807017459585}
+  - component: {fileID: -2443734541145903584}
   m_Layer: 6
   m_Name: PotatoLandmine
   m_TagString: Friendly
@@ -205,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e2212e67f441b1c930f043d2ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  readyTime: 15
+  readyTime: 5
 --- !u!114 &-5740779732289932293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +221,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxPeashooterHealth: 300
+--- !u!114 &118497807017459585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2765110054492206223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 213a1155a3402dd498827e4ffb2cb725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionRadius: 0.8
+  explosionDamage: 1800
+--- !u!114 &-2443734541145903584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2765110054492206223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae0b9a8057b76d4d888fbc13e4fec9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8222675504869398630
 GameObject:
   m_ObjectHideFlags: 0

@@ -204,7 +204,7 @@ public class PlantMove : MonoBehaviour
         }
         if (staminaBarUI != null)
         {
-            staminaBarUI.UpdateStamina(strength, maxStrength,isMoving);
+            staminaBarUI.UpdateStamina(strength, maxStrength, isMoving);
         }
     }
 
@@ -225,5 +225,38 @@ public class PlantMove : MonoBehaviour
         }
     }
 
-    
+
+    /// <summary>
+    /// 在植物对象被销毁时，清理其在格子上的占用标记与引用，避免数据不一致
+    /// </summary>
+    void OnDestroy()
+    {
+        // 清理当前所在格子
+        if (CurrentCell != null)
+        {
+            if (CurrentCell.plantOnCell == this)
+            {
+                CurrentCell.plantOnCell = null;
+                CurrentCell.isHavingPlant = false;
+            }
+            CurrentCell = null;
+        }
+
+        // 如果正在移动并预占了目标格位，也要释放预占
+        if (movingTargetCell != null)
+        {
+            if (movingTargetCell.plantOnCell == this)
+            {
+                movingTargetCell.plantOnCell = null;
+                movingTargetCell.isHavingPlant = false;
+            }
+            movingTargetCell = null;
+        }
+
+        // 若有选中控制器且当前选中为自己，取消选中（防御性处理）
+        if (SelectPlantController.instance != null && SelectPlantController.instance.GetSelectPlant() == this)
+        {
+            SelectPlantController.instance.DeselectPlant();
+        }
+    }
 }

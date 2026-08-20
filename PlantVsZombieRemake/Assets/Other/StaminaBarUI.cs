@@ -19,10 +19,6 @@ public class StaminaBarUI : MonoBehaviour
     [Tooltip("淡出延迟时间")][SerializeField] private float hideDelay = 1.5f; // 淡出延迟时间
     [Tooltip("淡出速度")][SerializeField] private float fadeSpeed = 1f; // 淡出速度
 
-    [Header("边框设置")]
-    [SerializeField] private Color borderColor = Color.gray;    // 边框颜色
-    [SerializeField] private float borderWidth = 2f;             // 边框粗细
-
     //内部设置
     private Slider slider;// 体力条 Slider 组件引用
     private Image fillImage;// 体力条填充图像
@@ -100,22 +96,5 @@ public class StaminaBarUI : MonoBehaviour
         {
             fillImage.color = tiredColor;
         }
-    }
-
-    private void CreateBorder()
-    {
-        GameObject borderObj = new GameObject("Border");
-        borderObj.transform.SetParent(this.transform, false); // 设为 Slider 的子物体，且不继承缩放
-
-        Image borderImage = borderObj.AddComponent<Image>();
-        borderImage.color = borderColor; // 设置边框颜色
-        borderRect = borderObj.GetComponent<RectTransform>();
-
-        borderRect.anchorMin = Vector2.zero;
-        borderRect.anchorMax = Vector2.one;
-        borderRect.offsetMin = new Vector2(-borderWidth, -borderWidth); // 向左下扩展
-        borderRect.offsetMax = new Vector2(borderWidth, borderWidth);   // 向右上扩展
-
-        borderObj.transform.SetAsFirstSibling();
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ZombieAttack : MonoBehaviour
 {
     private bool isAttacking = false;
-    [SerializeField] private float attackTime = 0.5f;
+    [SerializeField] private float attackTime = 0.5f;//攻击间隔时间
     private float timer = 0f;
     [SerializeField] private int attackDamage = 1;
     // 当前正在被攻击的目标引用（避免每帧从僵尸自己上查找）
@@ -13,6 +13,10 @@ public class ZombieAttack : MonoBehaviour
     private ZombieHealth zombieHealth = null;
     // 记录触发器范围内的所有植物目标（用于处理重叠多个目标的情况）
     private readonly HashSet<PeashooterHealth> nearbyPlants = new HashSet<PeashooterHealth>();
+
+    // 用于处理攻速被寒冰影响时的恢复
+    private bool attackSlowed = false;
+    private float originalAttackTime = 0f;
 
     /// <summary>
     /// 如果僵尸碰到Friendly标签的对象，且Friendly对象没有死亡且僵尸没有死亡，那么僵尸就会攻击Friendly对象
@@ -204,6 +208,24 @@ public class ZombieAttack : MonoBehaviour
         if (ph == null) ph = hit.GetComponentInChildren<PeashooterHealth>();
         return ph;
     }
+
+    // 将攻击间隔按照 slowFactor 缩放（仅首次生效，后续重复触发由调用方延长时长）
+    public void ApplyAttackSlow(float slowFactor)
+    {
+        if (attackSlowed) return;
+        attackSlowed = true;
+        originalAttackTime = attackTime;
+        if (slowFactor != 0f)
+        {
+            attackTime = originalAttackTime / slowFactor;
+        }
+    }
+
+    // 恢复攻击间隔
+    public void RemoveAttackSlow()
+    {
+        if (!attackSlowed) return;
+        attackSlowed = false;
+        attackTime = originalAttackTime;
+    }
 }
-
-

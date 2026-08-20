@@ -101,5 +101,5 @@ MonoBehaviour:
   spawnOptions:
   - id: 1
     prefab: {fileID: 3402461472589524056, guid: 0656d470961cfe3468103aec92d6b997, type: 3}
-    cost: 2
+    cost: 1
   spawnInterval: 0.5

@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e2212e67f441b1c930f043d2ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  readyTime: 5
+  readyTime: 15
 --- !u!114 &-5740779732289932293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 213a1155a3402dd498827e4ffb2cb725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: 0.8
+  explosionRadius: 0.9
   explosionDamage: 1800
 --- !u!114 &-2443734541145903584
 MonoBehaviour:

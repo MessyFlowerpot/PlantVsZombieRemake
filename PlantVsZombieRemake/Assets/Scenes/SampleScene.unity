@@ -630,10 +630,10 @@ MonoBehaviour:
   linearGrowthThreshold: 3
   linearGrowthAmount: 2
   linearGrowthMax: 50
-  waveInterval: 10
+  waveInterval: 20
   intervalReductionThreshold: 5
   intervalReductionAmount: 3
-  waveIntervalMin: 10
+  waveIntervalMin: 15
   guaranteedSpawners: 2
   isKeeping: 1
   maxKeepingPoints: 3
@@ -1230,6 +1230,7 @@ MonoBehaviour:
   - {fileID: 5554099011685167161, guid: 27b420cc9475da0408d530635118e98f, type: 3}
   - {fileID: 1571679065473330464, guid: 8a2e2646e471a7741bcf6543f4aeed8e, type: 3}
   - {fileID: 2765110054492206223, guid: e8c8c6d6910eaab4e971bccc72c822d8, type: 3}
+  - {fileID: 3458866202950944961, guid: b7fba6a3a75875546bea48df31e62716, type: 3}
 --- !u!212 &1808139131
 SpriteRenderer:
   m_ObjectHideFlags: 0

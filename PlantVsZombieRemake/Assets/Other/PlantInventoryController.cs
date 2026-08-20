@@ -11,13 +11,15 @@ public class PlantInventoryController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) TogglePlant(0);
+        if (Input.GetKeyDown(KeyCode.Alpha1)) TogglePlant(0);//按下数字键1，添加至第一个植物卡槽
 
-        if (Input.GetKeyDown(KeyCode.Alpha2)) TogglePlant(1);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) TogglePlant(1);//按下数字键2，添加至第二个植物卡槽
 
-        if (Input.GetKeyDown(KeyCode.Alpha3)) TogglePlant(2);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) TogglePlant(2);//按下数字键3，添加至第三个植物卡槽
 
-        if (Input.GetKeyDown(KeyCode.O)) OutSlot();
+        if (Input.GetKeyDown(KeyCode.Alpha4)) TogglePlant(3);//按下数字键4，添加至第四个植物卡槽
+
+        if (Input.GetKeyDown(KeyCode.O)) OutSlot();//按下字母键O，输出当前卡槽植物
     }
 
     /// <summary>

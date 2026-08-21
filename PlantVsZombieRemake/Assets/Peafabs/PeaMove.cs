@@ -7,6 +7,7 @@ public class PeaMove : MonoBehaviour
     [SerializeField] private float PeaMoveSpeed = 1.0f;
     [SerializeField] private int damage = 20;
     [SerializeField] private float destroyXPosition = 10f;
+    [SerializeField] private bool isPhysical = false; // 是否为物理伤害
     private bool hasHit = false;
 
     /// <summary>
@@ -26,7 +27,7 @@ public class PeaMove : MonoBehaviour
             if (zombieHealth != null)
             {
                 hasHit = true;
-                zombieHealth.TakeDamage(damage);
+                zombieHealth.TakeDamage(damage, isPhysical);
             }
             Destroy(gameObject);
         }

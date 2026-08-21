@@ -102,6 +102,7 @@ MonoBehaviour:
   PeaMoveSpeed: 5
   damage: 20
   destroyXPosition: 10
+  isPhysical: 0
 --- !u!58 &-3471335003154859200
 CircleCollider2D:
   m_ObjectHideFlags: 0

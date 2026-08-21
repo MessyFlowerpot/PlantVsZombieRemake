@@ -620,7 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7868fbcb18c2d642b19a55652564126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialPoints: 5
+  initialPoints: 20
   isExponential: 0
   exponentialBase: 1.15
   exponentialGrowthThreshold: 5
@@ -630,10 +630,10 @@ MonoBehaviour:
   linearGrowthThreshold: 3
   linearGrowthAmount: 2
   linearGrowthMax: 50
-  waveInterval: 20
+  waveInterval: 40
   intervalReductionThreshold: 5
   intervalReductionAmount: 3
-  waveIntervalMin: 15
+  waveIntervalMin: 3
   guaranteedSpawners: 2
   isKeeping: 1
   maxKeepingPoints: 3
@@ -1075,8 +1075,8 @@ Transform:
   m_GameObject: {fileID: 1462239908}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.13, y: 0.15, z: 0}
-  m_LocalScale: {x: 2.0058, y: 1, z: 1}
+  m_LocalPosition: {x: 0.13, y: 0.0479, z: 0}
+  m_LocalScale: {x: 2.0058, y: 1.0123, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1231,6 +1231,7 @@ MonoBehaviour:
   - {fileID: 1571679065473330464, guid: 8a2e2646e471a7741bcf6543f4aeed8e, type: 3}
   - {fileID: 2765110054492206223, guid: e8c8c6d6910eaab4e971bccc72c822d8, type: 3}
   - {fileID: 3458866202950944961, guid: b7fba6a3a75875546bea48df31e62716, type: 3}
+  - {fileID: 2973087846712148958, guid: 54f584bd89ce69543b669b34ab16721e, type: 3}
 --- !u!212 &1808139131
 SpriteRenderer:
   m_ObjectHideFlags: 0

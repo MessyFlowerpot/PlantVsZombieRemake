@@ -11,6 +11,7 @@ public class ZombieHealth : MonoBehaviour
     [SerializeField] private float willDieTakeDmageSpeed = 0.1f;
     [SerializeField] private int willDieTakeDmage;
     [SerializeField] private int maxWillDieTakeDmage = 10;
+    [SerializeField] private TypeIArmourHealth typeIArmour = null;
     private bool isSpeedDown = false;
 
     private void Start()
@@ -19,19 +20,36 @@ public class ZombieHealth : MonoBehaviour
         willDieTakeDmage = Random.Range(1,maxWillDieTakeDmage);
     }
 
+    private void Awake()
+    {
+        // 仅在子物体中搜索挂载了 TypeIArmourHealth 的对象（不包括自身）
+        typeIArmour = GetComponentInChildren<TypeIArmourHealth>();
+    }
+
     /// <summary>
     /// 僵尸受到伤害
     /// </summary>
     /// <param name="damage"></param>
-    public void TakeDamage(int damage)
+    /// <param name="isPhysical"></param>
+    public void TakeDamage(int damage,bool isPhysical)
     {
-        if(nowZombieHealth <= damage)
+        if(isPhysical)
         {
-            nowZombieHealth = 0;
+            Debug.Log("攻击模式：物理");
+            nowZombieHealth = (nowZombieHealth > damage ? nowZombieHealth - damage : 0);
         }
         else
         {
-            nowZombieHealth -= damage;
+            if(typeIArmour == null || typeIArmour.IsArmourBroken())
+            {
+                Debug.Log("攻击模式：无甲");
+                nowZombieHealth = (nowZombieHealth > damage ? nowZombieHealth - damage : 0);
+            }
+            else
+            {
+                Debug.Log("攻击模式：护甲");
+                typeIArmour.ArmourTakeDamage(damage);
+            }
         }
 
         if (nowZombieHealth <= diedZombieHealth)
@@ -77,6 +95,11 @@ public class ZombieHealth : MonoBehaviour
     public bool IsZombieDead()
     {
         return nowZombieHealth <= diedZombieHealth;
+    }
+
+    public void TypeIArmourBroke()
+    {
+        typeIArmour = null;
     }
 }
 

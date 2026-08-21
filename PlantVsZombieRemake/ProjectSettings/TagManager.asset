@@ -10,6 +10,7 @@ TagManager:
   - Grave
   - Bullet
   - UI
+  - TypeIArmour
   layers:
   - Default
   - TransparentFX

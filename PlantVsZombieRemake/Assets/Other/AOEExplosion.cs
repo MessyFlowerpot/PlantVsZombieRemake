@@ -7,6 +7,7 @@ public class AOEExplosion : MonoBehaviour
     [Header("AOE爆炸设置")]
     [Tooltip("爆炸半径(单位:米)")][SerializeField]private float explosionRadius = 1.5f; // 爆炸半径
     [Tooltip("爆炸伤害")] [SerializeField]private int explosionDamage = 1800; // 爆炸伤害
+    [Tooltip("是否为物理伤害")] [SerializeField]private bool isPhysical = true; // 是否为物理伤害
 
     public void TriggerExplosion()
     {
@@ -21,7 +22,7 @@ public class AOEExplosion : MonoBehaviour
                 ZombieHealth zombie= hit.GetComponent<ZombieHealth>();
                 if (zombie != null)
                 {
-                    zombie.TakeDamage(explosionDamage); // 对僵尸造成伤害
+                    zombie.TakeDamage(explosionDamage, isPhysical); // 对僵尸造成伤害
                 }
             }
         }

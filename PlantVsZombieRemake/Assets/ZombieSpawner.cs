@@ -130,9 +130,10 @@ public class ZombieSpawner : MonoBehaviour
         if (spawnOptions == null || spawnOptions.Count == 0) return null;
         var candidates = spawnOptions
             .Where(o => o != null && o.prefab != null && o.cost <= pendingPoints)
-            .OrderByDescending(o => o.cost)
             .ToList();
-        return candidates.FirstOrDefault();
+        if (candidates.Count == 0) return null;
+        int idx = UnityEngine.Random.Range(0, candidates.Count);
+        return candidates[idx];
     }
 
     public bool TrySpawnById(int id)
@@ -147,10 +148,11 @@ public class ZombieSpawner : MonoBehaviour
 
     private IEnumerator SpawnRoutine()
     {
-        while (isActive)
+        // 持续生成，直到点数不足以生成列表中最小消耗的预制体
+        while (isActive && pendingPoints >= GetMinCost())
         {
             var option = SelectOptionForCurrentPoints();
-            if (option == null) break;
+            if (option == null) break; // 无可用项则退出
             Instantiate(option.prefab, transform.position, Quaternion.identity);
             pendingPoints -= option.cost;
             yield return new WaitForSeconds(spawnInterval);

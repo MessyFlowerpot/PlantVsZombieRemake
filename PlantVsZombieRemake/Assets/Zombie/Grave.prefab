@@ -105,4 +105,7 @@ MonoBehaviour:
   - id: 2
     prefab: {fileID: 6229437639395147396, guid: a45f647f8c84e304eb8e0d9222d5b5dd, type: 3}
     cost: 4
+  - id: 3
+    prefab: {fileID: 5047651984885104179, guid: 1de08320551d8644e8c9d641687cead9, type: 3}
+    cost: 7
   spawnInterval: 0.5

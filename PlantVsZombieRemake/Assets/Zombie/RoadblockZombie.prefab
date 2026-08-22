@@ -50,8 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f5720f1045e3740a68cdab79b7f0f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minMoveSpeed: 2
-  maxMoveSpeed: 3
+  minMoveSpeed: 1.5
+  maxMoveSpeed: 2
   downSpeed: 0.8
   randomizeOnStart: 1
 --- !u!61 &6461683344293502769
@@ -241,8 +241,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxArmourDurability: 370
-  armourPrefab: {fileID: 2506198696951065520, guid: 5876a0e79f322bc4dbef41197777fb98, type: 3}
-  isArmourBroken: 0
 --- !u!1001 &6550965941100784961
 PrefabInstance:
   m_ObjectHideFlags: 0

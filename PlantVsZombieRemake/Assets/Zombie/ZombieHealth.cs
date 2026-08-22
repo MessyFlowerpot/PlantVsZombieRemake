@@ -35,19 +35,16 @@ public class ZombieHealth : MonoBehaviour
     {
         if(isPhysical)
         {
-            Debug.Log("攻击模式：物理");
             nowZombieHealth = (nowZombieHealth > damage ? nowZombieHealth - damage : 0);
         }
         else
         {
             if(typeIArmour == null || typeIArmour.IsArmourBroken())
             {
-                Debug.Log("攻击模式：无甲");
                 nowZombieHealth = (nowZombieHealth > damage ? nowZombieHealth - damage : 0);
             }
             else
             {
-                Debug.Log("攻击模式：护甲");
                 typeIArmour.ArmourTakeDamage(damage);
             }
         }

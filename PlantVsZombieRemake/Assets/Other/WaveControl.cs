@@ -85,7 +85,13 @@ public class WaveControl : MonoBehaviour
             NewWave();
             timer += waveInterval; // 用 += 保留超时量，避免节奏漂移
 
-            PointsUp(); // 新波次增加点数
+        }
+
+        //S键直接下一波次
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            NewWave();
+            timer = waveInterval;
         }
     }
 
@@ -200,5 +206,6 @@ public class WaveControl : MonoBehaviour
         OnPointsAllocated?.Invoke(allocation, validSpawners);
 
         Debug.Log($"第{waveCount}波");
+        PointsUp();
     }
 }

@@ -620,7 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7868fbcb18c2d642b19a55652564126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialPoints: 20
+  initialPoints: 5
   isExponential: 0
   exponentialBase: 1.15
   exponentialGrowthThreshold: 5

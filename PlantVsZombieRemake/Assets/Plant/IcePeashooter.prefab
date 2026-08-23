@@ -177,6 +177,8 @@ MonoBehaviour:
   bulletObject: {fileID: 8487663957486435720, guid: 3e61c52dd0d9f6848a9a144de6a6e224, type: 3}
   fireTime: 1.2
   nextFireTime: 1.2
+  shotCount: 1
+  highFrequencyInterval: 0.05
 --- !u!114 &5962483405342464636
 MonoBehaviour:
   m_ObjectHideFlags: 0

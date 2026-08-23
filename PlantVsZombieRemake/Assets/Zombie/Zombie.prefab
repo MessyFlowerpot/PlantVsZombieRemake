@@ -194,6 +194,7 @@ MonoBehaviour:
   willDieTakeDmageSpeed: 0.1
   willDieTakeDmage: 0
   maxWillDieTakeDmage: 10
+  typeIArmour: {fileID: 0}
 --- !u!114 &-8392361765133776690
 MonoBehaviour:
   m_ObjectHideFlags: 0

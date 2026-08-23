@@ -235,6 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionRadius: 0.9
   explosionDamage: 1800
+  isPhysical: 1
 --- !u!114 &-2443734541145903584
 MonoBehaviour:
   m_ObjectHideFlags: 0

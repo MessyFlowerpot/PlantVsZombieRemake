@@ -839,6 +839,66 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1116164259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1116164261}
+  - component: {fileID: 1116164260}
+  m_Layer: 0
+  m_Name: CardController
+  m_TagString: GameController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1116164260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116164259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca26d69267704ba48a77182a05de110c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialCooldowns:
+  - plantPrefab: {fileID: 5554099011685167161, guid: 27b420cc9475da0408d530635118e98f, type: 3}
+    cooldownTime: 3.5
+    isStartWithCoolDown: 0
+  - plantPrefab: {fileID: 1571679065473330464, guid: 8a2e2646e471a7741bcf6543f4aeed8e, type: 3}
+    cooldownTime: 30
+    isStartWithCoolDown: 1
+  - plantPrefab: {fileID: 2765110054492206223, guid: e8c8c6d6910eaab4e971bccc72c822d8, type: 3}
+    cooldownTime: 10
+    isStartWithCoolDown: 1
+  - plantPrefab: {fileID: 3458866202950944961, guid: b7fba6a3a75875546bea48df31e62716, type: 3}
+    cooldownTime: 3.5
+    isStartWithCoolDown: 1
+  - plantPrefab: {fileID: 2973087846712148958, guid: 54f584bd89ce69543b669b34ab16721e, type: 3}
+    cooldownTime: 3.5
+    isStartWithCoolDown: 1
+--- !u!4 &1116164261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116164259}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1175605850
 GameObject:
   m_ObjectHideFlags: 0
@@ -1381,6 +1441,7 @@ SceneRoots:
   - {fileID: 864848472}
   - {fileID: 1808139132}
   - {fileID: 840204657}
+  - {fileID: 1116164261}
   - {fileID: 631733866}
   - {fileID: 1744055895}
   - {fileID: 2118448836}

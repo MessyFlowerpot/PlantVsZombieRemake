@@ -125,6 +125,19 @@ public class CellHighLight : MonoBehaviour
             }
             else
             {
+                // 在实例化前，先使用 PlantCardControl 做冷却校验
+                if (PlantCardControl.Instance == null)
+                {
+                    Debug.LogWarning("未找到 PlantCardControl 实例，取消种植以避免不一致。");
+                    return;
+                }
+
+                if (!PlantCardControl.Instance.TryPlant(plant))
+                {
+                    Debug.Log($"{plant.name} 还在冷却中，无法种植。");
+                    return;
+                }
+
                 // 使用 CreateNewPrefab 并传入当前格子引用，以便建立关联（NewPrefabOnCell 会在创建后设置 plantOnCell）
                 GameObject created = NewPrefabOnCell.Instance.CreateNewPrefab(plant, transform.position, this);
                 if (created != null)
@@ -139,7 +152,6 @@ public class CellHighLight : MonoBehaviour
         // 若走到这里，说明格子被占用且没有已选植物 -> 选中格子上的植物
         if (plantOnCell == null)
         {
-            Debug.LogWarning("格子标记为已被占用，但 plantOnCell 为 null（数据不一致）");
             return;
         }
 

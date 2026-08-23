@@ -105,6 +105,8 @@ MonoBehaviour:
   bulletObject: {fileID: 379531469879136136, guid: ad0626272fc6c7240a28bc7ce285c0f3, type: 3}
   fireTime: 1
   nextFireTime: 1
+  shotCount: 1
+  highFrequencyInterval: 0.05
 --- !u!61 &2346278480830808454
 BoxCollider2D:
   m_ObjectHideFlags: 0

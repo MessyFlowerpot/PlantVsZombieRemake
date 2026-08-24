@@ -1057,6 +1057,69 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &1429535247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1429535250}
+  - component: {fileID: 1429535249}
+  - component: {fileID: 1429535248}
+  m_Layer: 0
+  m_Name: SunController
+  m_TagString: GameController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1429535248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429535247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b729ff4ed73cc341b9af00fa50f0478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalSun: 50
+  MaxSun: 9999
+--- !u!114 &1429535249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429535247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9173d900f902db843aa78658c8e0d8a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sunPrefab: {fileID: 8717970350398533656, guid: ce13a71d680f2ba48925b49fafd17564, type: 3}
+  newSunTime: 1
+  xRange: {x: -8, y: 8}
+  spawnY: 6
+--- !u!4 &1429535250
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429535247}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.39864212, y: 0.7508917, z: 0.040828153}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1462239908
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,6 +1505,7 @@ SceneRoots:
   - {fileID: 1808139132}
   - {fileID: 840204657}
   - {fileID: 1116164261}
+  - {fileID: 1429535250}
   - {fileID: 631733866}
   - {fileID: 1744055895}
   - {fileID: 2118448836}

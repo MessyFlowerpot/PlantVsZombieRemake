@@ -14,7 +14,7 @@ public class SunBank : MonoBehaviour
     private int currentSun;
     private void Awake()
     {
-        if(Instance == null)Instance = this;
+        if (Instance == null) Instance = this;
         else Destroy(Instance);
     }
     private void Start()
@@ -30,6 +30,13 @@ public class SunBank : MonoBehaviour
         if (sunNum + currentSun > MaxSun) currentSun = MaxSun;
         else currentSun += sunNum;
     }
+
+    // 新增：判断当前阳光是否足够（不修改 currentSun）
+    public bool CanSpend(int sunNum)
+    {
+        return currentSun - sunNum >= 0;
+    }
+
     public void SpendSun(int sunNum)
     {
         if (currentSun - sunNum < 0) Debug.Log("阳光不足");

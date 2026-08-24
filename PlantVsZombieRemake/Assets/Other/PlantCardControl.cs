@@ -8,6 +8,7 @@ public struct PlantCoolDownEntry
     public GameObject plantPrefab;
     public float cooldownTime;
     public bool isStartWithCoolDown;
+    public int sunCost;
 }
 
 public class PlantCardControl : MonoBehaviour
@@ -19,6 +20,9 @@ public class PlantCardControl : MonoBehaviour
 
     // 新增：记录每种植物的基础冷却（配置中的值），用于外部调用时自动查找冷却时长
     private Dictionary<GameObject, float> baseCooldownDict = new Dictionary<GameObject, float>();
+
+    // 新增：记录每种植物的阳光消耗
+    private Dictionary<GameObject, int> baseSunCostDict = new Dictionary<GameObject, int>();
 
     [Header("开局冷却配置(结构体列表)")]
     [Tooltip("格式：(植物预制体, 开局冷却秒数，是否开局冷却)")]
@@ -39,6 +43,9 @@ public class PlantCardControl : MonoBehaviour
             {
                 // 记录基础冷却时长，供 TryPlant(GameObject) 查找使用
                 baseCooldownDict[config.plantPrefab] = config.cooldownTime;
+
+                // 记录阳光消耗
+                baseSunCostDict[config.plantPrefab] = config.sunCost;
 
                 if (config.isStartWithCoolDown)
                 {
@@ -68,6 +75,7 @@ public class PlantCardControl : MonoBehaviour
 
     /// <summary>
     /// 【核心接口】尝试种植某种植物（直接传入要设置的冷却时长）
+    /// 修改：在种植前检测阳光是否足够，如果不足则返回 false；如果足够则调用 SunBank.SpendSun 并继续种植逻辑。
     /// </summary>
     public bool TryPlant(GameObject plantPrefab, float cooldownTime)
     {
@@ -76,6 +84,28 @@ public class PlantCardControl : MonoBehaviour
         {
             Debug.Log($"[{plantPrefab.name}] 还在冷却中！剩余 {cooldownDict[plantPrefab]:F1} 秒");
             return false;
+        }
+
+        // 检查阳光消耗（若未配置则视为 0）
+        int sunCost = 0;
+        baseSunCostDict.TryGetValue(plantPrefab, out sunCost);
+
+        if (sunCost > 0)
+        {
+            if (SunBank.Instance != null)
+            {
+                if (!SunBank.Instance.CanSpend(sunCost))
+                {
+                    Debug.Log($"[{plantPrefab.name}] 阳光不足，无法种植（需要 {sunCost}）");
+                    return false;
+                }
+                // 足够则扣除阳光
+                SunBank.Instance.SpendSun(sunCost);
+            }
+            else
+            {
+                Debug.LogWarning("SunBank.Instance 为 null，跳过阳光检测并继续种植（请确保场景中有 SunBank 实例）");
+            }
         }
 
         // 【安全写入】：无论之前有没有这个 Key，直接赋值
@@ -91,7 +121,7 @@ public class PlantCardControl : MonoBehaviour
     {
         if (plantPrefab == null)
         {
-            Debug.LogWarning("TryPlant 收到 null prefab");
+            Debug.LogWarning("TryPlant 收到 null 预制体");
             return false;
         }
 

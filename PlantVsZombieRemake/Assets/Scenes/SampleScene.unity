@@ -872,18 +872,23 @@ MonoBehaviour:
   - plantPrefab: {fileID: 5554099011685167161, guid: 27b420cc9475da0408d530635118e98f, type: 3}
     cooldownTime: 3.5
     isStartWithCoolDown: 0
+    sunCost: 100
   - plantPrefab: {fileID: 1571679065473330464, guid: 8a2e2646e471a7741bcf6543f4aeed8e, type: 3}
     cooldownTime: 30
     isStartWithCoolDown: 1
+    sunCost: 50
   - plantPrefab: {fileID: 2765110054492206223, guid: e8c8c6d6910eaab4e971bccc72c822d8, type: 3}
     cooldownTime: 10
     isStartWithCoolDown: 1
+    sunCost: 25
   - plantPrefab: {fileID: 3458866202950944961, guid: b7fba6a3a75875546bea48df31e62716, type: 3}
     cooldownTime: 3.5
     isStartWithCoolDown: 1
+    sunCost: 175
   - plantPrefab: {fileID: 2973087846712148958, guid: 54f584bd89ce69543b669b34ab16721e, type: 3}
     cooldownTime: 3.5
     isStartWithCoolDown: 1
+    sunCost: 200
 --- !u!4 &1116164261
 Transform:
   m_ObjectHideFlags: 0
@@ -1102,7 +1107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sunPrefab: {fileID: 8717970350398533656, guid: ce13a71d680f2ba48925b49fafd17564, type: 3}
-  newSunTime: 1
+  newSunTime: 6
   xRange: {x: -8, y: 8}
   spawnY: 6
 --- !u!4 &1429535250

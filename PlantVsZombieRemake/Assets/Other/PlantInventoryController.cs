@@ -21,6 +21,8 @@ public class PlantInventoryController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha5)) TogglePlant(4);//按下数字键5，添加至第五个植物卡槽
 
+        if (Input.GetKeyDown(KeyCode.Alpha6)) TogglePlant(5);//按下数字键5，添加至第五个植物卡槽
+
         if (Input.GetKeyDown(KeyCode.O)) OutSlot();//按下字母键O，输出当前卡槽植物
     }
 
